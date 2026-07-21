@@ -12,7 +12,7 @@ module uart_rx_coeff_loader #(
     output reg [15:0] coeff_data,
     output reg [3:0] coeff_addr,
     output reg [3:0] filter_mode,
-    output           coeff_valid
+    output reg       coeff_valid
 );
 
     localparam s_IDLE           = 3'b000;
@@ -44,7 +44,7 @@ module uart_rx_coeff_loader #(
                     r_Bit_Index     <= 0;
 
                     if (rx_serial == 1'b0)
-                        r_SM_Main     <= s_RX_DATA_BIT;
+                        r_SM_Main     <= s_RX_START_BIT;
                     else
                         r_SM_Main <= s_IDLE;
                 end 
@@ -136,8 +136,8 @@ module uart_rx_coeff_loader #(
 
                     2'd2: begin
                         coeff_data  <= temp_coeff_data;
-                        coeff_addr  <= r_Rx_Byte[3:0];
-                        filter_mode <= r_Rx_Byte[7:4];
+                        coeff_addr  <= r_Rx_Byte[7:4];
+                        filter_mode <= r_Rx_Byte[3:0];
 
                         coeff_valid <= 1'b1;
                         byte_count  <= 2'd0;
